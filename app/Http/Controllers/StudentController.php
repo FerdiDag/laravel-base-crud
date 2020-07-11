@@ -36,6 +36,12 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+           'name' => 'required|max:255',
+           'surname' => 'required|max:255',
+           'student_id' =>'required|unique:students,student_id',
+           'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|unique:students,email',
+       ]);
         $studenti = $request->all();
         $newStudent = new Student();
         $newStudent->fill($studenti);
@@ -63,7 +69,13 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
+        {
+        $student = Student::find($id);
+        if($student) {
+            return view('students.edit', compact('student'));
+        }
+        return abort('404');
+    }
     }
 
     /**
@@ -75,7 +87,19 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $student = Student::find($id);
+        $request->validate([
+            'name' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'student_id' =>'required|unique:students,student_id,' .$student->id,
+            'email' => 'required|regex:/(.+)@(.+)\.(.+)/i|unique:students,email,'.$student->id,
+        ]);
+        $dati = $request->all();
+            if($student) {
+            $student->update($dati);
+        }
+        return redirect()->route('students.index');
     }
 
     /**
@@ -86,6 +110,10 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $student = Student::find($id);
+        if($student) {
+            $student->delete();
+     }
+     return redirect()->route('students.index');
     }
 }
