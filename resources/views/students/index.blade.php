@@ -35,13 +35,13 @@
                                 Dettagli
                             </a>
                             <a class="btn btn-warning btn-sm" href="{{ route('students.edit', ['student' => $student->id]) }}">
-                                     Modifica
-                                 </a>
-                                 <form action="{{ route('students.destroy', ['student' => $student->id]) }}" method="post">
-                                     @method('DELETE')
-                                     @csrf
-                                     <input type="submit" class="btn btn-danger btn-sm" value="Elimina">
-                                 </form>
+                                Modifica
+                            </a>
+                            <form action="{{ route('students.destroy', ['student' => $student->id]) }}" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <input type="submit" class="btn btn-danger btn-sm" value="Elimina">
+                            </form>
                         </td>
                     </tr>
 
